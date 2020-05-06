@@ -1,25 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import Card from './Components/Card'
 
 function App() {
+  const [ movies, setMovies ] = useState([]);
+
+  useEffect(() => {
+    fetch('https://api.airtable.com/v0/app9l6Q2S6XVq6fbg/Movies?api_key=keynasaprJtAl4PCc')
+        .then(response => response.json())
+        .then(data => setMovies(data.records));
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container mt-5">
+      {console.log(movies)}
+    <div className="row">
+      <div className="col">
+        <div className="card-deck">
+          {movies.map(movie => <Card {...movie.fields} /> )}
+        </div>
+      </div>
     </div>
+  </div>
   );
 }
 
